@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>document.documentElement.setAttribute("data-theme", localStorage.getItem("theme") || "dark");</script>
+  <title>Member Management | Pump N' Gain Fitness Gym</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="global.css">
+
+  <!-- Member Management Specific Styles -->
+  <style>
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      flex: 1;
+      max-width: 360px;
+    }
+    .search-box input { background: none; border: none; outline: none; color: var(--text-main); width: 100%; }
+
+    .filter-select {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .panel {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: var(--card-shadow);
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+    .data-table th { padding: 0.85rem 1rem; color: var(--text-muted); border-bottom: 1px solid var(--border); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; }
+    .data-table td { padding: 1rem; border-bottom: 1px solid var(--border); color: var(--text-main); }
+    .data-table tr:hover td { background-color: var(--bg-hover); }
+
+    .badge { display: inline-block; padding: 0.25rem 0.65rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+    .badge-active { background: rgba(34, 197, 94, 0.15); color: var(--accent-green); }
+    .badge-expired { background: rgba(217, 37, 37, 0.15); color: var(--accent-red); }
+  </style>
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div>
+      <a href="dashboard.html" class="brand-header">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBizrfqq7RZpkCqczR6anacDxV1KpKpKRwJlIwEQtt2vnMMoKPJU8Z6pA&s=10" alt="Pump N Gain Logo" class="brand-logo">
+        <div class="brand-title">
+          PUMP N' GAIN
+          <small>ADMIN PORTAL</small>
+        </div>
+      </a>
+
+      <ul class="nav-list">
+        <li class="nav-item"><a class="nav-link" href="dashboard.html"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span>Dashboard</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="member-management.html"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Member Management</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="membership-plans.html"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg><span>Membership Plans</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="payments-billing.html"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span>Payments & Billing</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="attendance-checkin.html"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg><span>Attendance / Check-in</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="reports-analytics.html"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span>Reports & Analytics</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="system-settings.html"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>System Settings</span></a></li>
+      </ul>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="theme-control">
+        <span class="theme-label">Theme mode</span>
+        <button class="theme-toggle-btn" id="theme-btn" type="button" role="switch" aria-checked="true" aria-label="Switch to light mode">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+          <span class="theme-switch-track"><span class="theme-switch-thumb"></span></span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 13a9 9 0 1 1-10-10 7 7 0 0 0 10 10Z"/></svg>
+        </button>
+      </div>
+
+      <div class="admin-profile-pill">
+        <div class="avatar">A</div>
+        <div class="admin-info">
+          <div class="admin-name">Coach Alex</div>
+          <div class="admin-role">Head Admin</div>
+        </div>
+      </div>
+      <a class="logout-link" href="../admin-login.html" onclick="logoutAdmin(event)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 17l5-5-5-5M15 12H3M21 19V5a2 2 0 0 0-2-2h-6"/></svg><span class="logout-label">Log out</span></a>
+    </div>
+  </aside>
+
+  <div class="main-wrapper">
+    <header class="topbar">
+      <h1 class="page-title">Member Management</h1>
+      <div class="topbar-actions">
+        <button class="btn btn-secondary" onclick="openModal('modal-checkin')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m13 2-9 12h7l-1 8 9-12h-7l1-8Z"/></svg>Quick Check-in</button>
+        <button class="btn btn-primary" onclick="openModal('modal-add-member')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Add Member</button>
+      </div>
+    </header>
+
+    <div class="content-area">
+      <div class="toolbar">
+        <div class="search-box">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="member-search" placeholder="Search members by name or ID...">
+        </div>
+        <div style="display: flex; gap: 0.75rem;">
+          <select class="filter-select">
+            <option value="">All Statuses</option>
+            <option value="active">Active</option>
+            <option value="expired">Expired</option>
+            <option value="frozen">Frozen</option>
+          </select>
+          <select class="filter-select">
+            <option value="">All Plans</option>
+            <option value="daypass">Day Pass</option>
+            <option value="monthly">Monthly Pro</option>
+            <option value="annual">Annual VIP</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="panel">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Member ID</th>
+              <th>Full Name</th>
+              <th>Contact</th>
+              <th>Plan</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>#PNG-1001</td>
+              <td><b>John Doe</b></td>
+              <td>john@example.com</td>
+              <td>Monthly Pro</td>
+              <td><span class="badge badge-active">Active</span></td>
+              <td>
+                <button class="btn btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.75rem;" onclick="viewProfile('John Doe')">Profile</button>
+                <button class="btn btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.75rem;" onclick="freezeAccount('John Doe')">Freeze</button>
+              </td>
+            </tr>
+            <tr>
+              <td>#PNG-1002</td>
+              <td><b>Maria Garcia</b></td>
+              <td>maria@example.com</td>
+              <td>Annual VIP</td>
+              <td><span class="badge badge-active">Active</span></td>
+              <td>
+                <button class="btn btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.75rem;" onclick="viewProfile('Maria Garcia')">Profile</button>
+                <button class="btn btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.75rem;" onclick="freezeAccount('Maria Garcia')">Freeze</button>
+              </td>
+            </tr>
+            <tr>
+              <td>#PNG-1003</td>
+              <td><b>Robert Lim</b></td>
+              <td>robert@example.com</td>
+              <td>Day Pass</td>
+              <td><span class="badge badge-expired">Expired</span></td>
+              <td>
+                <button class="btn btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.75rem;" onclick="viewProfile('Robert Lim')">Profile</button>
+                <button class="btn btn-primary" style="padding: 0.3rem 0.6rem; font-size: 0.75rem;" onclick="openModal('modal-payment')">Renew</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="global.js"></script>
+
+  <!-- Member Management Specific Script -->
+  <script>
+    function viewProfile(name) {
+      alert(`Viewing profile for ${name}`);
+    }
+
+    function freezeAccount(name) {
+      alert(`Account for ${name} frozen.`);
+    }
+  </script>
+</body>
+</html>
