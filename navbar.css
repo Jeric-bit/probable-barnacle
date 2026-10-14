@@ -750,6 +750,47 @@ section {
   flex-wrap: wrap;
 }
 
+.reviews-card {
+  margin-top: 32px;
+  padding: 34px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: linear-gradient(135deg, rgba(194, 65, 30, 0.11), rgba(24, 23, 26, 0.78) 42%);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.28);
+}
+
+.reviews-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.reviews-heading h3 {
+  margin: 4px 0 7px;
+  color: #fff;
+  font-family: 'Anton', Impact, sans-serif;
+  font-size: clamp(28px, 4vw, 42px);
+  letter-spacing: 0.8px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.reviews-heading p { margin: 0; color: var(--gray); font-size: 14px; }
+
+.reviews-score { min-width: 132px; padding-left: 22px; border-left: 1px solid var(--line); }
+.reviews-score strong { display: block; color: #fff; font-family: 'Anton', Impact, sans-serif; font-size: 44px; line-height: 0.9; }
+.reviews-stars, .review-stars { color: #f0a33b; letter-spacing: 2px; }
+.reviews-score small { display: block; margin-top: 4px; color: var(--gray); font-size: 11px; text-transform: uppercase; }
+
+.reviews-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+.review-item { min-height: 190px; padding: 20px; border: 1px solid var(--line); border-radius: 14px; background: rgba(17, 17, 18, 0.46); }
+.review-item blockquote { margin: 14px 0 22px; color: #e2e1dd; font-size: 14px; line-height: 1.6; }
+.review-item cite { display: flex; flex-direction: column; gap: 3px; color: #fff; font-size: 13px; font-style: normal; }
+.review-item cite span { color: var(--gray); font-size: 11px; }
+
 /* ==========================================
    PLANS SECTION (#plans)
    ========================================== */
@@ -1072,6 +1113,84 @@ section {
   flex-shrink: 0;
 }
 
+.location-panel {
+  grid-column: 1 / -1;
+  margin-top: 32px;
+  overflow: hidden;
+  background: rgba(17, 17, 18, 0.6);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+
+.location-panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 18px 20px 14px;
+}
+
+.location-kicker {
+  display: block;
+  color: var(--red);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.location-panel-heading h4 {
+  color: #fff;
+  font-family: 'Anton', Impact, sans-serif;
+  font-size: 24px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.location-pin {
+  width: 24px;
+  height: 24px;
+  color: var(--red);
+  flex: 0 0 24px;
+}
+
+.map-frame {
+  position: relative;
+  height: 300px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: #252528;
+}
+
+.map-frame img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  filter: grayscale(0.2) contrast(1.05);
+}
+
+.location-panel-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 20px 18px;
+  color: #d1d0cb;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.location-panel-footer a {
+  color: #f2a27c;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.location-panel-footer a:hover { color: #fff; }
+
 /* Right Pass Reservation Form Card */
 .join-form-card {
   background: var(--panel);
@@ -1279,6 +1398,9 @@ section {
   .coach-pillars-grid {
     grid-template-columns: 1fr;
   }
+  .reviews-grid {
+    grid-template-columns: 1fr;
+  }
   .join-layout {
     grid-template-columns: 1fr;
   }
@@ -1291,6 +1413,26 @@ section {
 }
 
 @media (max-width: 540px) {
+  .reviews-card {
+    padding: 22px;
+  }
+  .reviews-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .reviews-score {
+    padding-top: 16px;
+    padding-left: 0;
+    border-top: 1px solid var(--line);
+    border-left: 0;
+  }
+
+  .location-panel-footer {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+
   .join-form-grid {
     grid-template-columns: 1fr;
   }

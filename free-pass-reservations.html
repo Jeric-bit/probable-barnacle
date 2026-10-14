@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>document.documentElement.setAttribute("data-theme", localStorage.getItem("theme") || "dark");</script>
+  <title>Contact Requests | Pump N' Gain Fitness Gym</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="global.css">
+  <style>
+    .reservation-summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .summary-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--bg-card);
+      box-shadow: var(--card-shadow);
+    }
+
+    .summary-label {
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .summary-value {
+      display: block;
+      margin-top: 0.35rem;
+      color: var(--text-main);
+      font-size: 1.8rem;
+      font-weight: 800;
+    }
+
+    .summary-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: rgba(217, 37, 37, 0.15);
+      color: var(--accent-red);
+    }
+
+    .summary-icon svg { width: 22px; height: 22px; }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.25rem;
+    }
+
+    .toolbar-title h2 { color: var(--text-main); font-size: 1.15rem; margin-bottom: 0.25rem; }
+    .toolbar-title p { color: var(--text-muted); font-size: 0.85rem; }
+
+    .toolbar-actions { display: flex; align-items: center; gap: 0.75rem; }
+
+    .search-input, .filter-select {
+      min-height: 40px;
+      padding: 0.65rem 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg-main);
+      color: var(--text-main);
+      font: inherit;
+      font-size: 0.85rem;
+    }
+
+    .search-input { width: min(280px, 100%); }
+    .search-input:focus, .filter-select:focus { outline: 2px solid var(--accent-red); outline-offset: 1px; }
+
+    .reservation-table-wrap { overflow-x: auto; }
+
+    .reservation-table { width: 100%; min-width: 850px; border-collapse: collapse; text-align: left; }
+    .reservation-table th { padding: 0.8rem 1rem; border-bottom: 1px solid var(--border); color: var(--text-muted); font-size: 0.75rem; letter-spacing: 0.05em; text-transform: uppercase; }
+    .reservation-table td { padding: 1rem; border-bottom: 1px solid var(--border); color: var(--text-main); font-size: 0.87rem; vertical-align: middle; }
+    .reservation-table tr:hover td { background: var(--bg-hover); }
+    .reservation-table th:first-child, .reservation-table td:first-child { padding-left: 0.25rem; }
+
+    .member-name { display: block; font-weight: 700; }
+    .member-email { display: block; margin-top: 0.2rem; color: var(--text-muted); font-size: 0.78rem; }
+    .subtle { color: var(--text-muted); }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.3rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .status-badge::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .status-pending { color: var(--accent-yellow); background: rgba(245, 176, 20, 0.13); }
+    .status-confirmed { color: var(--accent-green); background: rgba(34, 197, 94, 0.13); }
+    .status-cancelled { color: var(--text-muted); background: rgba(160, 160, 170, 0.13); }
+
+    .row-actions { display: flex; gap: 0.45rem; }
+
+    .row-button {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      font: inherit;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.42rem 0.6rem;
+    }
+
+    .row-button:hover { border-color: var(--accent-red); color: var(--accent-red); }
+    .row-button.confirm:hover { border-color: var(--accent-green); color: var(--accent-green); }
+
+    .empty-state { display: none; padding: 3rem 1rem; color: var(--text-muted); text-align: center; }
+
+    @media (max-width: 760px) {
+      .reservation-summary { grid-template-columns: 1fr; }
+      .toolbar-actions { width: 100%; }
+      .search-input { flex: 1; width: auto; }
+      .filter-select { max-width: 150px; }
+    }
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div>
+      <a href="dashboard.html" class="brand-header">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBizrfqq7RZpkCqczR6anacDxV1KpKpKRwJlIwEQtt2vnMMoKPJU8Z6pA&s=10" alt="Pump N Gain Logo" class="brand-logo">
+        <div class="brand-title">PUMP N' GAIN<small>ADMIN PORTAL</small></div>
+      </a>
+      <ul class="nav-list">
+        <li class="nav-item"><a class="nav-link" href="dashboard.html"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span>Dashboard</span></a></li>
+        <li class="nav-item"><a class="nav-link active" href="free-pass-reservations.html"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 2v4M16 2v4M4 10h16M8 14h3M8 17h5"/></svg><span>Contact Requests</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="member-management.html"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Member Management</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="membership-plans.html"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg><span>Membership Plans</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="payments-billing.html"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span>Payments &amp; Billing</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="attendance-checkin.html"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg><span>Attendance / Check-in</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="reports-analytics.html"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span>Reports &amp; Analytics</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="system-settings.html"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0 .33-1.82V9A1.65 1.65 0 0 0 4.6 9H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>System Settings</span></a></li>
+      </ul>
+    </div>
+    <div class="sidebar-footer">
+      <div class="admin-profile-pill"><div class="avatar">A</div><div class="admin-info"><div class="admin-name">Coach Alex</div><div class="admin-role">Head Admin</div></div></div>
+      <a class="logout-link" href="../admin-login.html" onclick="logoutAdmin(event)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 17l5-5-5-5M15 12H3M21 19V5a2 2 0 0 0-2-2h-6"/></svg><span class="logout-label">Log out</span></a>
+    </div>
+  </aside>
+
+  <div class="main-wrapper">
+    <header class="topbar"><h1 class="page-title">Contact Requests</h1><div class="topbar-actions"><span class="date-display">Landing page inquiries</span></div></header>
+    <main class="content-area">
+      <div class="reservation-summary">
+        <div class="summary-card"><div><span class="summary-label">New today</span><strong class="summary-value" id="newToday">3</strong></div><span class="summary-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></span></div>
+        <div class="summary-card"><div><span class="summary-label">Pending follow-up</span><strong class="summary-value" id="pendingCount">4</strong></div><span class="summary-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span></div>
+        <div class="summary-card"><div><span class="summary-label">This month</span><strong class="summary-value">28</strong></div><span class="summary-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5M4 19h16"/><path d="m7 15 4-4 3 2 6-7"/></svg></span></div>
+      </div>
+
+      <section class="panel">
+        <div class="toolbar">
+          <div class="toolbar-title"><h2>Recent contact requests</h2><p>Inquiries submitted through the public landing page.</p></div>
+          <div class="toolbar-actions"><input class="search-input" id="reservationSearch" type="search" placeholder="Search name or email" aria-label="Search contact requests"><select class="filter-select" id="statusFilter" aria-label="Filter contact requests"><option value="all">All statuses</option><option value="pending">Pending</option><option value="confirmed">Confirmed</option><option value="cancelled">Cancelled</option></select></div>
+        </div>
+        <div class="reservation-table-wrap">
+          <table class="reservation-table">
+            <thead><tr><th>Member</th><th>Phone</th><th>Preferred option</th><th>Fitness goal</th><th>Submitted</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="reservationRows">
+              <tr data-status="pending"><td><span class="member-name">Maria Santos</span><span class="member-email">maria.santos@email.com</span></td><td>0917 555 0182</td><td>Monthly Pro</td><td>Strength</td><td class="subtle">Today, 9:42 AM</td><td><span class="status-badge status-pending">Pending</span></td><td><div class="row-actions"><button class="row-button confirm" type="button" onclick="updateStatus(this, 'confirmed')">Confirm</button><button class="row-button" type="button" onclick="updateStatus(this, 'cancelled')">Dismiss</button></div></td></tr>
+              <tr data-status="pending"><td><span class="member-name">Jared Lim</span><span class="member-email">jared.lim@email.com</span></td><td>0920 224 7710</td><td>Day Pass</td><td>Conditioning</td><td class="subtle">Today, 8:15 AM</td><td><span class="status-badge status-pending">Pending</span></td><td><div class="row-actions"><button class="row-button confirm" type="button" onclick="updateStatus(this, 'confirmed')">Confirm</button><button class="row-button" type="button" onclick="updateStatus(this, 'cancelled')">Dismiss</button></div></td></tr>
+              <tr data-status="confirmed"><td><span class="member-name">Alyssa Cruz</span><span class="member-email">alyssa.cruz@email.com</span></td><td>0918 447 2931</td><td>Quarterly Flex</td><td>General fitness</td><td class="subtle">Yesterday</td><td><span class="status-badge status-confirmed">Confirmed</span></td><td><div class="row-actions"><button class="row-button" type="button" onclick="updateStatus(this, 'cancelled')">Cancel</button></div></td></tr>
+              <tr data-status="pending"><td><span class="member-name">Noel Garcia</span><span class="member-email">noel.garcia@email.com</span></td><td>0917 880 4210</td><td>Annual VIP</td><td>Strength</td><td class="subtle">Yesterday</td><td><span class="status-badge status-pending">Pending</span></td><td><div class="row-actions"><button class="row-button confirm" type="button" onclick="updateStatus(this, 'confirmed')">Confirm</button><button class="row-button" type="button" onclick="updateStatus(this, 'cancelled')">Dismiss</button></div></td></tr>
+            </tbody>
+          </table>
+          <div class="empty-state" id="emptyState">No contact requests match your filters.</div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="global.js"></script>
+  <script>
+    const searchInput = document.getElementById('reservationSearch');
+    const statusFilter = document.getElementById('statusFilter');
+    const rows = [...document.querySelectorAll('#reservationRows tr')];
+    const emptyState = document.getElementById('emptyState');
+
+    function filterReservations() {
+      const query = searchInput.value.trim().toLowerCase();
+      const status = statusFilter.value;
+      let visibleRows = 0;
+      rows.forEach(row => {
+        const matchesText = row.textContent.toLowerCase().includes(query);
+        const matchesStatus = status === 'all' || row.dataset.status === status;
+        row.style.display = matchesText && matchesStatus ? '' : 'none';
+        if (matchesText && matchesStatus) visibleRows += 1;
+      });
+      emptyState.style.display = visibleRows ? 'none' : 'block';
+    }
+
+    function updateStatus(button, status) {
+      const row = button.closest('tr');
+      const badge = row.querySelector('.status-badge');
+      row.dataset.status = status;
+      badge.className = `status-badge status-${status}`;
+      badge.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+      button.closest('.row-actions').innerHTML = status === 'confirmed'
+        ? '<button class="row-button" type="button" onclick="updateStatus(this, \'cancelled\')">Cancel</button>'
+        : '<button class="row-button confirm" type="button" onclick="updateStatus(this, \'confirmed\')">Restore</button>';
+      filterReservations();
+    }
+
+    searchInput.addEventListener('input', filterReservations);
+    statusFilter.addEventListener('change', filterReservations);
+  </script>
+</body>
+</html>

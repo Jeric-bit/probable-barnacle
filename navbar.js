@@ -8,7 +8,7 @@ const prog = document.getElementById('prog');
 
 
 const links = [...document.querySelectorAll('.nav a.link')];
-const secs = ['home', 'about', 'plans'].map(id => document.getElementById(id));
+const secs = ['home', 'about', 'plans', 'location'].map(id => document.getElementById(id));
 
 // Scroll & Scrollspy Handlers
 function onScroll() {
@@ -137,3 +137,24 @@ hdr.addEventListener('mousemove', (e) => {
 new MutationObserver(() => {
   document.body.classList.toggle('lock', nav.classList.contains('open'));
 }).observe(nav, { attributes: true, attributeFilter: ['class'] });
+
+// Reveal content as it enters the viewport without animating the initial hero.
+const revealItems = document.querySelectorAll('#about, #plans, #signup, .gym-gallery-item, .single-coach-spotlight, .reviews-card, .plan-card, .join-info-card, .join-form-card');
+
+if ('IntersectionObserver' in window) {
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  revealItems.forEach(item => {
+    item.classList.add('scroll-reveal');
+    revealObserver.observe(item);
+  });
+} else {
+  revealItems.forEach(item => item.classList.add('is-visible'));
+}

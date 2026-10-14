@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Member Portal | Pump N' Gain Fitness Gym</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #111112;
+      --panel: #1a191c;
+      --panel-soft: #211f22;
+      --text: #ffffff;
+      --muted: #a3a0a0;
+      --line: rgba(255, 255, 255, 0.12);
+      --accent: #c2411e;
+      --success: #36c978;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at 82% 0%, rgba(194, 65, 30, 0.17), transparent 32%), var(--bg);
+      color: var(--text);
+      font-family: Inter, sans-serif;
+    }
+
+    a { color: inherit; }
+
+    .topbar {
+      border-bottom: 1px solid var(--line);
+      background: rgba(17, 17, 18, 0.88);
+      backdrop-filter: blur(14px);
+    }
+
+    .topbar-inner, .page {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .topbar-inner {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      text-decoration: none;
+      font-family: Anton, Impact, sans-serif;
+      font-size: 24px;
+      letter-spacing: 1.5px;
+    }
+
+    .brand small {
+      display: block;
+      color: var(--muted);
+      font-family: Inter, sans-serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+    }
+
+    .back-link {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .back-link:hover { color: var(--text); }
+
+    .page { padding: 62px 0 80px; }
+
+    .eyebrow {
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1, h2, h3 { font-family: Anton, Impact, sans-serif; letter-spacing: 1px; }
+
+    h1 { margin-bottom: 10px; font-size: clamp(38px, 6vw, 66px); line-height: 1; }
+
+    .intro { color: var(--muted); line-height: 1.6; margin-bottom: 34px; }
+
+    .overview {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 42px;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(26, 25, 28, 0.88);
+      padding: 24px;
+    }
+
+    .membership-card { border-color: rgba(194, 65, 30, 0.6); background: linear-gradient(145deg, rgba(194, 65, 30, 0.2), var(--panel)); }
+
+    .panel-label { color: var(--muted); font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+
+    .panel-value { display: block; margin: 10px 0 6px; font-size: 25px; font-weight: 800; }
+
+    .panel-note { color: var(--muted); font-size: 13px; line-height: 1.5; }
+
+    .status { color: var(--success); font-size: 12px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
+
+    .content-grid { display: grid; grid-template-columns: 1fr 1.35fr; gap: 24px; align-items: start; }
+
+    .content-grid > .panel { min-width: 0; }
+
+    .panel-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
+
+    h2 { margin-bottom: 0; font-size: 28px; }
+
+    .profile-form { display: grid; gap: 16px; }
+
+    .field { display: grid; gap: 7px; }
+
+    label { color: var(--muted); font-size: 12px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; }
+
+    input, select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--panel-soft);
+      color: var(--text);
+      font: inherit;
+      padding: 12px 13px;
+    }
+
+    input:focus, select:focus { outline: 2px solid rgba(194, 65, 30, 0.55); outline-offset: 1px; }
+
+    .form-actions { display: flex; align-items: center; gap: 14px; margin-top: 6px; }
+
+    button, .button {
+      border: 0;
+      border-radius: 7px;
+      background: var(--accent);
+      color: #fff;
+      cursor: pointer;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 800;
+      padding: 12px 16px;
+      text-decoration: none;
+    }
+
+    .button.secondary { background: transparent; border: 1px solid var(--line); color: var(--muted); }
+
+    .notice { color: var(--success); font-size: 12px; font-weight: 700; }
+
+    .billing-table-wrap { max-width: 100%; overflow-x: auto; }
+
+    .billing-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+
+    .billing-table th { color: var(--muted); font-size: 11px; letter-spacing: 1px; text-align: left; text-transform: uppercase; }
+
+    .billing-table th, .billing-table td { border-bottom: 1px solid var(--line); padding: 15px 10px; }
+
+    .billing-table th:first-child, .billing-table td:first-child { padding-left: 0; }
+
+    .billing-table th:last-child, .billing-table td:last-child { padding-right: 0; text-align: right; }
+
+    .paid { color: var(--success); font-size: 11px; font-weight: 800; text-transform: uppercase; }
+
+    .history-link { color: #fff; font-size: 12px; font-weight: 700; text-decoration: none; }
+
+    .history-link:hover { color: var(--accent); }
+
+    @media (max-width: 800px) {
+      .overview, .content-grid { grid-template-columns: 1fr; }
+      .page { padding-top: 42px; }
+    }
+
+    @media (max-width: 520px) {
+      .topbar-inner, .page { width: min(100% - 28px, 1180px); }
+      .topbar-inner { min-height: 68px; }
+      .brand { font-size: 20px; }
+      .back-link { font-size: 12px; }
+      .panel { padding: 18px; }
+      .billing-table-wrap { margin-right: -2px; }
+      .billing-table { min-width: 600px; white-space: nowrap; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html">PUMP N' GAIN<small>MEMBER PORTAL</small></a>
+      <a class="back-link" href="signin.html" onclick="logout(event)">Log out</a>
+    </div>
+  </header>
+
+  <main class="page">
+    <span class="eyebrow">Member account</span>
+    <h1>Welcome back, Alex.</h1>
+    <p class="intro">Manage your personal details, check your active membership, and review your payment history in one place.</p>
+
+    <section class="overview" aria-label="Membership overview">
+      <article class="panel membership-card">
+        <span class="panel-label">Active membership</span>
+        <strong class="panel-value">Monthly Pro</strong>
+        <span class="status">Active</span>
+        <p class="panel-note">Next billing date: October 28, 2026</p>
+      </article>
+      <article class="panel">
+        <span class="panel-label">Current plan</span>
+        <strong class="panel-value">&#8369;600</strong>
+        <span class="panel-note">Billed monthly</span>
+      </article>
+      <article class="panel">
+        <span class="panel-label">Gym access</span>
+        <strong class="panel-value">7AM - 11PM</strong>
+        <span class="panel-note">Use your mobile check-in at the entrance.</span>
+      </article>
+    </section>
+
+    <div class="content-grid">
+      <section class="panel" aria-labelledby="profile-heading">
+        <div class="panel-heading">
+          <h2 id="profile-heading">Your profile</h2>
+        </div>
+        <form class="profile-form" onsubmit="saveProfile(event)">
+          <div class="field">
+            <label for="member-name">Full name</label>
+            <input id="member-name" type="text" value="Alex Rivera" required>
+          </div>
+          <div class="field">
+            <label for="member-email">Email address</label>
+            <input id="member-email" type="email" value="alex@example.com" required>
+          </div>
+          <div class="field">
+            <label for="member-phone">Phone number</label>
+            <input id="member-phone" type="tel" value="0917 123 4567" required>
+          </div>
+          <div class="field">
+            <label for="member-goal">Primary fitness goal</label>
+            <select id="member-goal">
+              <option>Muscle building and strength</option>
+              <option>Fat loss and conditioning</option>
+              <option>General fitness and wellness</option>
+              <option>Athletic performance</option>
+            </select>
+          </div>
+          <div class="form-actions">
+            <button type="submit">Save changes</button>
+            <span id="profile-notice" class="notice" role="status"></span>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel" aria-labelledby="billing-heading">
+        <div class="panel-heading">
+          <h2 id="billing-heading">Payment history</h2>
+          <a class="history-link" href="admin/payments-billing.html">Billing support</a>
+        </div>
+        <div class="billing-table-wrap">
+          <table class="billing-table">
+            <thead>
+              <tr><th>Date</th><th>Description</th><th>Method</th><th>Amount</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Sep 28, 2026</td><td>Monthly Pro membership</td><td>GCash</td><td>&#8369;1,800</td><td><span class="paid">Paid</span></td></tr>
+              <tr><td>Aug 28, 2026</td><td>Monthly Pro membership</td><td>GCash</td><td>&#8369;1,800</td><td><span class="paid">Paid</span></td></tr>
+              <tr><td>Jul 28, 2026</td><td>Monthly Pro membership</td><td>GCash</td><td>&#8369;1,800</td><td><span class="paid">Paid</span></td></tr>
+              <tr><td>Jun 28, 2026</td><td>Monthly Pro membership</td><td>GCash</td><td>&#8369;1,800</td><td><span class="paid">Paid</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    function logout(event) {
+      event.preventDefault();
+      window.location.replace('signin.html');
+    }
+
+    function saveProfile(event) {
+      event.preventDefault();
+      document.getElementById('profile-notice').textContent = 'Profile saved';
+    }
+  </script>
+</body>
+</html>
